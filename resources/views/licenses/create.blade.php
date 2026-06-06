@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Broadcaster Platform</title>
+    <title>Create License - Broadcaster Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -144,122 +144,86 @@
             color: #1a1a2e;
             margin-bottom: 8px;
         }
-        .header-subtitle {
-            color: #666;
-            font-size: 16px;
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
         }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
+        .back-link:hover {
+            text-decoration: underline;
         }
-        .stat-card {
+        .form-container {
             background: white;
-            padding: 28px;
+            padding: 40px;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 700px;
         }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        .form-group {
+            margin-bottom: 24px;
         }
-        .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 16px;
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 14px;
         }
-        .stat-icon.licenses {
+        .help-text {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            width: 100%;
+            padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-        }
-        .stat-icon.users {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        .stat-icon.devices {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-        }
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 4px;
-        }
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .welcome-section {
-            background: white;
-            padding: 32px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
-        }
-        .welcome-section h2 {
-            font-size: 24px;
-            color: #1a1a2e;
-            margin-bottom: 12px;
-        }
-        .welcome-section p {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .welcome-section strong {
-            color: #1a1a2e;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .quick-actions {
-            background: white;
-            padding: 32px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
-        .quick-actions h3 {
-            font-size: 20px;
-            color: #1a1a2e;
-            margin-bottom: 20px;
+        .field-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #fef2f2;
+            padding: 10px 12px;
+            border-radius: 8px;
         }
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-        }
-        .action-card {
-            padding: 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .action-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-        .action-card i {
-            font-size: 28px;
-            color: #667eea;
-            margin-bottom: 12px;
-        }
-        .action-card-title {
-            color: #1a1a2e;
+        .field-error i {
             font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .action-card-desc {
-            color: #666;
-            font-size: 12px;
         }
     </style>
 </head>
@@ -271,13 +235,13 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="{{ route('dashboard') }}" class="menu-item active">
+            <a href="{{ route('dashboard') }}" class="menu-item">
                 <i class="fas fa-home"></i>
                 <span class="menu-item-text">Dashboard</span>
             </a>
             
             @if (auth()->user()->role === 'admin')
-                <a href="{{ route('licenses.index') }}" class="menu-item">
+                <a href="{{ route('licenses.index') }}" class="menu-item active">
                     <i class="fas fa-key"></i>
                     <span class="menu-item-text">Manage Licenses</span>
                 </a>
@@ -324,66 +288,88 @@
 
     <div class="main-content">
         <div class="header">
-            <h1 class="header-title">Welcome, {{ auth()->user()->name }}!</h1>
-            <p class="header-subtitle">{{ ucfirst(auth()->user()->role) }} Dashboard</p>
+            <h1 class="header-title">Create License</h1>
+            <a href="{{ route('licenses.index') }}" class="back-link">← Back to Licenses</a>
         </div>
 
-        <div class="stats-grid">
-            @if (auth()->user()->role === 'admin')
-                <div class="stat-card">
-                    <div class="stat-icon licenses">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <div class="stat-value">{{ \App\Models\License::count() }}</div>
-                    <div class="stat-label">Total Licenses</div>
-                </div>
-            @endif
-            
-            <div class="stat-card">
-                <div class="stat-icon users">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-value">{{ \App\Models\User::where('role', 'client')->count() }}</div>
-                <div class="stat-label">Total Clients</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon devices">
-                    <i class="fas fa-laptop"></i>
-                </div>
-                <div class="stat-value">{{ \App\Models\Device::count() }}</div>
-                <div class="stat-label">Total Devices</div>
-            </div>
-        </div>
+        <div class="form-container">
+            <form method="POST" action="{{ route('licenses.store') }}">
+                @csrf
 
-        <div class="welcome-section">
-            <h2>Good to see you, {{ auth()->user()->name }}!</h2>
-            <p>You're logged in as <strong>{{ ucfirst(auth()->user()->role) }}</strong> with email <strong>{{ auth()->user()->email }}</strong>.</p>
-            
-            @if (auth()->user()->role === 'admin')
-                <p style="margin-top: 12px;">You have full access to manage licenses and users in the system.</p>
-            @else
-                <p style="margin-top: 12px;">You can view and manage your assigned licenses from the sidebar menu.</p>
-            @endif
-        </div>
-
-        @if (auth()->user()->role === 'admin')
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <div class="action-grid">
-                    <a href="{{ route('licenses.create') }}" class="action-card">
-                        <i class="fas fa-plus-circle"></i>
-                        <div class="action-card-title">Create License</div>
-                        <div class="action-card-desc">Issue new license</div>
-                    </a>
-                    <a href="{{ route('licenses.index') }}" class="action-card">
-                        <i class="fas fa-list"></i>
-                        <div class="action-card-title">View All Licenses</div>
-                        <div class="action-card-desc">Manage existing</div>
-                    </a>
+                <div class="form-group">
+                    <label for="license_key">License Key</label>
+                    <div class="help-text">Leave empty to auto-generate (format: XXX-XXX-XXX)</div>
+                    <input type="text" id="license_key" name="license_key" value="{{ old('license_key') }}" placeholder="ABC-123-XYZ">
+                    @if ($errors->has('license_key'))
+                        <div class="field-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{ $errors->first('license_key') }}</span>
+                        </div>
+                    @endif
                 </div>
-            </div>
-        @endif
+
+                <div class="form-group">
+                    <label for="user_id">User</label>
+                    <div class="help-text">Select the client user to assign this license</div>
+                    <select id="user_id" name="user_id" required>
+                        <option value="">Select a user</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }} ({{ $user->email }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('user_id'))
+                        <div class="field-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{ $errors->first('user_id') }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="">Select status</option>
+                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>Suspended</option>
+                        <option value="expired" {{ old('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+                    </select>
+                    @if ($errors->has('status'))
+                        <div class="field-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{ $errors->first('status') }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label for="expires_at">Expiration Date</label>
+                    <div class="help-text">When will this license expire?</div>
+                    <input type="date" id="expires_at" name="expires_at" value="{{ old('expires_at') }}" required>
+                    @if ($errors->has('expires_at'))
+                        <div class="field-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{ $errors->first('expires_at') }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label for="allowed_devices">Allowed Devices</label>
+                    <div class="help-text">How many devices can use this license?</div>
+                    <input type="number" id="allowed_devices" name="allowed_devices" value="{{ old('allowed_devices', 1) }}" min="1" max="10" required>
+                    @if ($errors->has('allowed_devices'))
+                        <div class="field-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{ $errors->first('allowed_devices') }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <button type="submit">Create License</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

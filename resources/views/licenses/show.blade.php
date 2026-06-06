@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Broadcaster Platform</title>
+    <title>License Details - Broadcaster Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -144,122 +144,150 @@
             color: #1a1a2e;
             margin-bottom: 8px;
         }
-        .header-subtitle {
-            color: #666;
-            font-size: 16px;
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
         }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
+        .back-link:hover {
+            text-decoration: underline;
         }
-        .stat-card {
+        .details-container {
             background: white;
-            padding: 28px;
+            padding: 40px;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 32px;
         }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        .detail-item {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 2px solid #e5e7eb;
         }
-        .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 16px;
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
-        .stat-icon.licenses {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .detail-label {
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .stat-icon.users {
+        .detail-value {
+            color: #1a1a2e;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-active {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
-        .stat-icon.devices {
+        .status-suspended {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        .status-expired {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
         }
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 4px;
+        .status-inactive {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
         }
-        .stat-label {
-            color: #666;
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+        .action-btn {
+            padding: 14px 28px;
+            border-radius: 10px;
             font-size: 14px;
-            font-weight: 500;
-        }
-        .welcome-section {
-            background: white;
-            padding: 32px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
-        }
-        .welcome-section h2 {
-            font-size: 24px;
-            color: #1a1a2e;
-            margin-bottom: 12px;
-        }
-        .welcome-section p {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .welcome-section strong {
-            color: #1a1a2e;
             font-weight: 600;
-        }
-        .quick-actions {
-            background: white;
-            padding: 32px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-        .quick-actions h3 {
-            font-size: 20px;
-            color: #1a1a2e;
-            margin-bottom: 20px;
-        }
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-        }
-        .action-card {
-            padding: 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
             text-decoration: none;
+            border: none;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
-        .action-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
+        .action-btn:hover {
+            transform: translateY(-2px);
         }
-        .action-card i {
-            font-size: 28px;
-            color: #667eea;
-            margin-bottom: 12px;
+        .edit-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
-        .action-card-title {
+        .edit-btn:hover {
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+        .delete-btn:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+        .devices-section {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+        .section-title {
+            font-size: 24px;
             color: #1a1a2e;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+        .empty-devices {
+            color: #999;
             font-size: 14px;
-            font-weight: 600;
+            text-align: center;
+            padding: 32px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+        .device-item {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f3f4f6 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        .device-item:hover {
+            transform: translateX(4px);
+        }
+        .device-name {
+            font-weight: 700;
+            color: #1a1a2e;
+            font-size: 16px;
             margin-bottom: 4px;
         }
-        .action-card-desc {
+        .device-id {
             color: #666;
-            font-size: 12px;
+            font-size: 14px;
+        }
+        .device-last-seen {
+            color: #999;
+            font-size: 13px;
+            text-align: right;
         }
     </style>
 </head>
@@ -271,13 +299,13 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="{{ route('dashboard') }}" class="menu-item active">
+            <a href="{{ route('dashboard') }}" class="menu-item">
                 <i class="fas fa-home"></i>
                 <span class="menu-item-text">Dashboard</span>
             </a>
             
             @if (auth()->user()->role === 'admin')
-                <a href="{{ route('licenses.index') }}" class="menu-item">
+                <a href="{{ route('licenses.index') }}" class="menu-item active">
                     <i class="fas fa-key"></i>
                     <span class="menu-item-text">Manage Licenses</span>
                 </a>
@@ -324,66 +352,80 @@
 
     <div class="main-content">
         <div class="header">
-            <h1 class="header-title">Welcome, {{ auth()->user()->name }}!</h1>
-            <p class="header-subtitle">{{ ucfirst(auth()->user()->role) }} Dashboard</p>
+            <h1 class="header-title">License Details</h1>
+            <a href="{{ route('licenses.index') }}" class="back-link">← Back to Licenses</a>
         </div>
 
-        <div class="stats-grid">
-            @if (auth()->user()->role === 'admin')
-                <div class="stat-card">
-                    <div class="stat-icon licenses">
-                        <i class="fas fa-key"></i>
+        <div class="details-container">
+            <div class="detail-item">
+                <div class="detail-label">License Key</div>
+                <div class="detail-value">{{ $license->license_key }}</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Owner</div>
+                <div class="detail-value">
+                    {{ $license->user ? $license->user->name : 'N/A' }}
+                    @if ($license->user)
+                        <span style="color: #666; font-size: 16px; margin-left: 8px;">({{ $license->user->email }})</span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Status</div>
+                <div class="detail-value">
+                    <span class="status-badge status-{{ $license->status }}">
+                        {{ ucfirst($license->status) }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Expiration Date</div>
+                <div class="detail-value">
+                    {{ $license->expires_at ? $license->expires_at->format('Y-m-d') : 'No expiration' }}
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Device Usage</div>
+                <div class="detail-value">
+                    {{ $license->devices->count() }} / {{ $license->allowed_devices }} devices registered
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ route('licenses.edit', $license) }}" class="action-btn edit-btn">Edit License</a>
+                <form method="POST" action="{{ route('licenses.destroy', $license) }}" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to suspend this license?')">Suspend License</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="devices-section">
+            <h2 class="section-title">Registered Devices</h2>
+            @if ($license->devices->count() > 0)
+                @foreach ($license->devices as $device)
+                    <div class="device-item">
+                        <div>
+                            <div class="device-name">{{ $device->device_name }}</div>
+                            <div class="device-id">ID: {{ $device->device_id }}</div>
+                        </div>
+                        <div class="device-last-seen">
+                            Last seen: {{ $device->last_seen ? $device->last_seen->format('Y-m-d H:i') : 'Never' }}
+                        </div>
                     </div>
-                    <div class="stat-value">{{ \App\Models\License::count() }}</div>
-                    <div class="stat-label">Total Licenses</div>
-                </div>
-            @endif
-            
-            <div class="stat-card">
-                <div class="stat-icon users">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-value">{{ \App\Models\User::where('role', 'client')->count() }}</div>
-                <div class="stat-label">Total Clients</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon devices">
-                    <i class="fas fa-laptop"></i>
-                </div>
-                <div class="stat-value">{{ \App\Models\Device::count() }}</div>
-                <div class="stat-label">Total Devices</div>
-            </div>
-        </div>
-
-        <div class="welcome-section">
-            <h2>Good to see you, {{ auth()->user()->name }}!</h2>
-            <p>You're logged in as <strong>{{ ucfirst(auth()->user()->role) }}</strong> with email <strong>{{ auth()->user()->email }}</strong>.</p>
-            
-            @if (auth()->user()->role === 'admin')
-                <p style="margin-top: 12px;">You have full access to manage licenses and users in the system.</p>
+                @endforeach
             @else
-                <p style="margin-top: 12px;">You can view and manage your assigned licenses from the sidebar menu.</p>
+                <div class="empty-devices">
+                    <i class="fas fa-laptop" style="font-size: 32px; margin-bottom: 12px; color: #d1d5db;"></i>
+                    <p>No devices registered for this license yet.</p>
+                </div>
             @endif
         </div>
-
-        @if (auth()->user()->role === 'admin')
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <div class="action-grid">
-                    <a href="{{ route('licenses.create') }}" class="action-card">
-                        <i class="fas fa-plus-circle"></i>
-                        <div class="action-card-title">Create License</div>
-                        <div class="action-card-desc">Issue new license</div>
-                    </a>
-                    <a href="{{ route('licenses.index') }}" class="action-card">
-                        <i class="fas fa-list"></i>
-                        <div class="action-card-title">View All Licenses</div>
-                        <div class="action-card-desc">Manage existing</div>
-                    </a>
-                </div>
-            </div>
-        @endif
     </div>
 </body>
 </html>
