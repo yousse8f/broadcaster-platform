@@ -145,13 +145,21 @@
             margin-bottom: 8px;
         }
         .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             color: #667eea;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 15px;
+            padding: 8px 16px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
         .back-link:hover {
-            text-decoration: underline;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(-4px);
         }
         .details-container {
             background: white;
@@ -211,6 +219,7 @@
             display: flex;
             gap: 12px;
             margin-top: 32px;
+            flex-wrap: wrap;
         }
         .action-btn {
             padding: 14px 28px;
@@ -221,9 +230,18 @@
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         .action-btn:hover {
             transform: translateY(-2px);
+        }
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        .action-btn i {
+            font-size: 14px;
         }
         .edit-btn {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
@@ -231,7 +249,8 @@
             box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
         .edit-btn:hover {
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4);
         }
         .delete-btn {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -239,7 +258,8 @@
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
         }
         .delete-btn:hover {
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 6px 25px rgba(239, 68, 68, 0.4);
         }
         .devices-section {
             background: white;
@@ -309,6 +329,10 @@
                     <i class="fas fa-key"></i>
                     <span class="menu-item-text">Manage Licenses</span>
                 </a>
+                <a href="{{ route('devices.index') }}" class="menu-item">
+                    <i class="fas fa-desktop"></i>
+                    <span class="menu-item-text">Manage Devices</span>
+                </a>
             @endif
             
             @if (auth()->user()->role === 'client')
@@ -353,7 +377,10 @@
     <div class="main-content">
         <div class="header">
             <h1 class="header-title">License Details</h1>
-            <a href="{{ route('licenses.index') }}" class="back-link">← Back to Licenses</a>
+            <a href="{{ route('licenses.index') }}" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Licenses
+            </a>
         </div>
 
         <div class="details-container">
@@ -391,7 +418,14 @@
             <div class="detail-item">
                 <div class="detail-label">Device Usage</div>
                 <div class="detail-value">
-                    {{ $license->devices->count() }} / {{ $license->allowed_devices }} devices registered
+                    <a href="{{ route('devices.index', ['license_id' => $license->id]) }}" style="color: #667eea; text-decoration: none;">
+                        {{ $license->active_devices_count }} / {{ $license->allowed_devices }} devices registered
+                    </a>
+                    @if($license->online_devices_count > 0)
+                        <span style="color: #10b981; font-size: 14px; margin-left: 12px;">
+                            <i class="fas fa-circle" style="font-size: 8px;"></i> {{ $license->online_devices_count }} online
+                        </span>
+                    @endif
                 </div>
             </div>
 
@@ -409,15 +443,20 @@
             <h2 class="section-title">Registered Devices</h2>
             @if ($license->devices->count() > 0)
                 @foreach ($license->devices as $device)
-                    <div class="device-item">
+                    <a href="{{ route('devices.show', $device) }}" class="device-item" style="text-decoration: none;">
                         <div>
                             <div class="device-name">{{ $device->device_name }}</div>
                             <div class="device-id">ID: {{ $device->device_id }}</div>
                         </div>
-                        <div class="device-last-seen">
-                            Last seen: {{ $device->last_seen ? $device->last_seen->format('Y-m-d H:i') : 'Never' }}
+                        <div>
+                            <span class="status-badge status-{{ $device->status }}" style="margin-right: 12px;">
+                                {{ ucfirst($device->status) }}
+                            </span>
+                            <span class="device-last-seen">
+                                {{ $device->isOnline() ? 'Online' : 'Offline' }} • Last seen: {{ $device->last_seen ? $device->last_seen->diffForHumans() : 'Never' }}
+                            </span>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             @else
                 <div class="empty-devices">

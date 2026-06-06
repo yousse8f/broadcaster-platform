@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\LicenseController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,5 +37,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/{license}/edit', [LicenseController::class, 'edit'])->name('edit');
         Route::put('/{license}', [LicenseController::class, 'update'])->name('update');
         Route::delete('/{license}', [LicenseController::class, 'destroy'])->name('destroy');
+    });
+
+    // Device Management (Admin only)
+    Route::middleware('admin')->prefix('devices')->name('devices.')->group(function () {
+        Route::get('/', [DeviceController::class, 'index'])->name('index');
+        Route::get('/{device}', [DeviceController::class, 'show'])->name('show');
+        Route::post('/{device}/activate', [DeviceController::class, 'activate'])->name('activate');
+        Route::post('/{device}/suspend', [DeviceController::class, 'suspend'])->name('suspend');
+        Route::post('/{device}/revoke', [DeviceController::class, 'revoke'])->name('revoke');
     });
 });

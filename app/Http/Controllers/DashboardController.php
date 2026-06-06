@@ -12,6 +12,15 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
-        return view('dashboard');
+        $stats = [
+            'total_licenses' => \App\Models\License::count(),
+            'active_licenses' => \App\Models\License::where('status', 'active')->count(),
+            'total_users' => \App\Models\User::count(),
+            'total_devices' => \App\Models\Device::count(),
+            'active_devices' => \App\Models\Device::where('status', 'active')->count(),
+            'online_devices' => \App\Models\Device::online()->count(),
+        ];
+
+        return view('dashboard', compact('stats'));
     }
 }

@@ -64,6 +64,22 @@ class License extends Model
      */
     public function hasReachedDeviceLimit(): bool
     {
-        return $this->devices()->where('is_active', true)->count() >= $this->allowed_devices;
+        return $this->devices()->where('status', 'active')->count() >= $this->allowed_devices;
+    }
+
+    /**
+     * Get the count of active devices for this license.
+     */
+    public function getActiveDevicesCountAttribute(): int
+    {
+        return $this->devices()->where('status', 'active')->count();
+    }
+
+    /**
+     * Get the count of online devices for this license.
+     */
+    public function getOnlineDevicesCountAttribute(): int
+    {
+        return $this->devices()->online()->count();
     }
 }

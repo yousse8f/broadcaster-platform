@@ -236,30 +236,37 @@
             gap: 16px;
         }
         .action-card {
-            padding: 20px;
+            padding: 24px;
             border: 2px solid #e5e7eb;
             border-radius: 12px;
             text-decoration: none;
             transition: all 0.3s ease;
+            background: white;
         }
         .action-card:hover {
             border-color: #667eea;
-            background: #f8f9ff;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f3f4f6 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
         }
         .action-card i {
-            font-size: 28px;
+            font-size: 32px;
             color: #667eea;
             margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+        .action-card:hover i {
+            transform: scale(1.1);
         }
         .action-card-title {
             color: #1a1a2e;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
         .action-card-desc {
             color: #666;
-            font-size: 12px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -280,6 +287,10 @@
                 <a href="{{ route('licenses.index') }}" class="menu-item">
                     <i class="fas fa-key"></i>
                     <span class="menu-item-text">Manage Licenses</span>
+                </a>
+                <a href="{{ route('devices.index') }}" class="menu-item">
+                    <i class="fas fa-desktop"></i>
+                    <span class="menu-item-text">Manage Devices</span>
                 </a>
             @endif
             
@@ -334,25 +345,33 @@
                     <div class="stat-icon licenses">
                         <i class="fas fa-key"></i>
                     </div>
-                    <div class="stat-value">{{ \App\Models\License::count() }}</div>
+                    <div class="stat-value">{{ $stats['total_licenses'] }}</div>
                     <div class="stat-label">Total Licenses</div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon devices">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div class="stat-value">{{ $stats['total_devices'] }}</div>
+                    <div class="stat-label">Total Devices</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon devices" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="stat-value">{{ $stats['online_devices'] }}</div>
+                    <div class="stat-label">Online Devices</div>
+                </div>
             @endif
-            
+
             <div class="stat-card">
                 <div class="stat-icon users">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-value">{{ \App\Models\User::where('role', 'client')->count() }}</div>
-                <div class="stat-label">Total Clients</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon devices">
-                    <i class="fas fa-laptop"></i>
-                </div>
-                <div class="stat-value">{{ \App\Models\Device::count() }}</div>
-                <div class="stat-label">Total Devices</div>
+                <div class="stat-value">{{ $stats['total_users'] }}</div>
+                <div class="stat-label">Total Users</div>
             </div>
         </div>
 
@@ -380,6 +399,11 @@
                         <i class="fas fa-list"></i>
                         <div class="action-card-title">View All Licenses</div>
                         <div class="action-card-desc">Manage existing</div>
+                    </a>
+                    <a href="{{ route('devices.index') }}" class="action-card">
+                        <i class="fas fa-desktop"></i>
+                        <div class="action-card-title">Manage Devices</div>
+                        <div class="action-card-desc">View all devices</div>
                     </a>
                 </div>
             </div>

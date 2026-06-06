@@ -155,11 +155,21 @@
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         .create-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+        .create-btn:active {
+            transform: translateY(0);
+        }
+        .create-btn i {
+            font-size: 14px;
         }
         .table-container {
             background: white;
@@ -215,44 +225,56 @@
         }
         .action-buttons {
             display: flex;
-            gap: 8px;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
         }
         .action-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
             text-decoration: none;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
         }
         .action-btn:hover {
             transform: translateY(-1px);
         }
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        .action-btn i {
+            font-size: 11px;
+        }
         .view-btn {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
         }
         .view-btn:hover {
-            background: #2563eb;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         .edit-btn {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
         }
         .edit-btn:hover {
-            background: #d97706;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
         }
         .delete-btn {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
         .delete-btn:hover {
-            background: #dc2626;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
         }
         .alert {
             padding: 16px 20px;
@@ -309,6 +331,10 @@
                 <a href="{{ route('licenses.index') }}" class="menu-item active">
                     <i class="fas fa-key"></i>
                     <span class="menu-item-text">Manage Licenses</span>
+                </a>
+                <a href="{{ route('devices.index') }}" class="menu-item">
+                    <i class="fas fa-desktop"></i>
+                    <span class="menu-item-text">Manage Devices</span>
                 </a>
             @endif
             
@@ -400,12 +426,18 @@
                                 <td>{{ $license->devices->count() }} / {{ $license->allowed_devices }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('licenses.show', $license) }}" class="action-btn view-btn">View</a>
-                                        <a href="{{ route('licenses.edit', $license) }}" class="action-btn edit-btn">Edit</a>
+                                        <a href="{{ route('licenses.show', $license) }}" class="action-btn view-btn">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        <a href="{{ route('licenses.edit', $license) }}" class="action-btn edit-btn">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
                                         <form method="POST" action="{{ route('licenses.destroy', $license) }}" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to suspend this license?')">Delete</button>
+                                            <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to suspend this license?')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
