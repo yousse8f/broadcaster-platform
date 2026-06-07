@@ -1,13 +1,9 @@
-@once
-    @push('styles')
-        <link rel="stylesheet" href="{{ asset('build/assets/sidebar-ClQ81Ax0.css') }}">
-    @endpush
-@endonce
-
 <div class="sidebar">
     <div class="sidebar-logo">
-        <img src="{{ asset('images/logo/logo-maester.webp') }}" alt="Logo" class="sidebar-logo-image">
-        <span class="sidebar-logo-text">broadcast</span>
+        <div class="sidebar-logo-container">
+            <img src="{{ asset('images/logo/logo-maester.webp') }}" alt="Logo" class="sidebar-logo-image">
+        </div>
+        <span class="sidebar-logo-text">broadcast.nissireseaux</span>
     </div>
 
     <div class="sidebar-menu">

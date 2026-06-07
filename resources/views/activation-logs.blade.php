@@ -3,109 +3,91 @@
 @section('title', 'Activation Logs')
 
 @section('content')
-<div class="header">
-    <h1 class="header-title">Activation Logs</h1>
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Activation Logs</h1>
 </div>
 
-<div class="statistics-grid">
-    <div class="stat-card">
-        <div class="stat-icon stat-icon-blue">
-            <i class="fas fa-list"></i>
-        </div>
-        <div class="stat-label">Total Logs</div>
-        <div class="stat-value">{{ $totalCount ?? 0 }}</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div class="text-blue-600 text-2xl mb-2"><i class="fas fa-list"></i></div>
+        <div class="text-sm text-gray-500">Total Logs</div>
+        <div class="text-2xl font-bold text-gray-900">{{ $totalCount ?? 0 }}</div>
     </div>
-
-    <div class="stat-card">
-        <div class="stat-icon stat-icon-green">
-            <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="stat-label">Successful</div>
-        <div class="stat-value">{{ $successCount ?? 0 }}</div>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div class="text-green-600 text-2xl mb-2"><i class="fas fa-check-circle"></i></div>
+        <div class="text-sm text-gray-500">Successful</div>
+        <div class="text-2xl font-bold text-gray-900">{{ $successCount ?? 0 }}</div>
     </div>
-
-    <div class="stat-card">
-        <div class="stat-icon stat-icon-red">
-            <i class="fas fa-times-circle"></i>
-        </div>
-        <div class="stat-label">Failed</div>
-        <div class="stat-value">{{ $failedCount ?? 0 }}</div>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div class="text-red-600 text-2xl mb-2"><i class="fas fa-times-circle"></i></div>
+        <div class="text-sm text-gray-500">Failed</div>
+        <div class="text-2xl font-bold text-gray-900">{{ $failedCount ?? 0 }}</div>
     </div>
 </div>
 
-<div class="filter-section">
-    <form method="GET" action="{{ route('activation-logs') }}" class="filter-grid">
-        <div class="filter-group">
-            <label class="filter-label">Status</label>
-            <select name="status" class="filter-select">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+    <form method="GET" action="{{ route('activation-logs') }}" class="flex flex-wrap gap-4">
+        <div class="flex-1 min-w-[200px]">
+            <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10">
                 <option value="">All Status</option>
                 <option value="success" {{ request('status') === 'success' ? 'selected' : '' }}>Success</option>
                 <option value="failed" {{ request('status') === 'failed' ? 'selected' : '' }}>Failed</option>
             </select>
         </div>
-        
-        <div class="filter-group">
-            <label class="filter-label">License Key</label>
-            <input type="text" name="license_key" class="filter-select" value="{{ request('license_key') }}" placeholder="License key...">
+        <div class="flex-1 min-w-[200px]">
+            <input type="text" name="license_key" value="{{ request('license_key') }}" placeholder="License key..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10">
         </div>
-        
-        <div class="filter-group">
-            <label class="filter-label">Device ID</label>
-            <input type="text" name="device_id" class="filter-select" value="{{ request('device_id') }}" placeholder="Device ID...">
+        <div class="flex-1 min-w-[200px]">
+            <input type="text" name="device_id" value="{{ request('device_id') }}" placeholder="Device ID..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10">
         </div>
-        
-        <div class="filter-group" style="justify-content: flex-end; flex-direction: row; gap: 12px; align-items: flex-end;">
-            <button type="submit" class="filter-apply-btn">
-                <i class="fas fa-search"></i> Filter
-            </button>
-            <a href="{{ route('activation-logs') }}" class="filter-clear-btn">
-                <i class="fas fa-times"></i> Clear
-            </a>
+        <div class="flex gap-2">
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 h-10">Filter</button>
+            <a href="{{ route('activation-logs') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 h-10">Clear</a>
         </div>
     </form>
 </div>
 
-<div class="table-container">
-    <table>
-        <thead>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+        <thead class="bg-gray-50">
             <tr>
-                <th>Time</th>
-                <th>License Key</th>
-                <th>Device ID</th>
-                <th>Device Name</th>
-                <th>IP Address</th>
-                <th>Status</th>
-                <th>Message</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">License Key</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="bg-white divide-y divide-gray-200">
             @forelse($activationLogs as $log)
-                <tr>
-                    <td>{{ $log->created_at->format('M d, Y H:i:s') }}</td>
-                    <td><code>{{ $log->license_key }}</code></td>
-                    <td><code>{{ $log->device_id }}</code></td>
-                    <td>{{ $log->device_name ?? 'N/A' }}</td>
-                    <td>{{ $log->ip_address ?? 'N/A' }}</td>
-                    <td>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-gray-600">{{ $log->created_at->format('M d, Y H:i:s') }}</td>
+                    <td class="px-6 py-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">{{ $log->license_key }}</code></td>
+                    <td class="px-6 py-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">{{ $log->device_id }}</code></td>
+                    <td class="px-6 py-4 text-gray-900">{{ $log->device_name ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 text-gray-600">{{ $log->ip_address ?? 'N/A' }}</td>
+                    <td class="px-6 py-4">
                         @if($log->success)
-                            <span class="status-badge status-active">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
                                 <i class="fas fa-check-circle"></i> Success
                             </span>
                         @else
-                            <span class="status-badge status-revoked">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
                                 <i class="fas fa-times-circle"></i> Failed
                             </span>
                         @endif
                     </td>
-                    <td>{{ $log->message ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 text-gray-600">{{ $log->message ?? 'N/A' }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" style="text-align: center; padding: 40px;">
-                        <div class="empty-state">
-                            <i class="fas fa-list"></i>
-                            <h3>No activation logs found</h3>
-                            <p>Activation attempts will appear here</p>
+                    <td colspan="7" class="px-6 py-12 text-center">
+                        <div class="text-gray-400">
+                            <i class="fas fa-list text-4xl mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">No activation logs found</h3>
+                            <p class="text-gray-500">Activation attempts will appear here</p>
                         </div>
                     </td>
                 </tr>
@@ -115,271 +97,8 @@
 </div>
 
 @if($activationLogs->hasPages())
-    <div class="pagination">
+    <div class="mt-6">
         {{ $activationLogs->appends(request()->except('page'))->links() }}
     </div>
 @endif
 @endsection
-
-@push('styles')
-<style>
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 32px;
-    }
-    .header-title {
-        font-size: 32px;
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-    .create-btn {
-        padding: 12px 24px;
-        background: white;
-        color: #f97316;
-        border: 2px solid #f97316;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s;
-    }
-    .create-btn:hover {
-        background: #f97316;
-        color: white;
-    }
-    .alert {
-        padding: 16px 20px;
-        border-radius: 8px;
-        margin-bottom: 24px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .alert-success {
-        background: #dcfce7;
-        color: #166534;
-        border: 1px solid #86efac;
-    }
-    .statistics-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 24px;
-        margin-bottom: 32px;
-    }
-    .stat-card {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-    .stat-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
-    .stat-icon-blue {
-        background: #dbeafe;
-        color: #1d4ed8;
-    }
-    .stat-icon-green {
-        background: #dcfce7;
-        color: #166534;
-    }
-    .stat-icon-yellow {
-        background: #fef9c3;
-        color: #854d0e;
-    }
-    .stat-icon-red {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-    .stat-label {
-        color: #64748b;
-        font-size: 14px;
-        font-weight: 500;
-    }
-    .stat-value {
-        color: #1a1a2e;
-        font-size: 28px;
-        font-weight: 700;
-    }
-    .filter-section {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .filter-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        align-items: end;
-    }
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .filter-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #475569;
-    }
-    .filter-select {
-        padding: 10px 14px;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #1a1a2e;
-        background: white;
-    }
-    .filter-select:focus {
-        outline: none;
-        border-color: #f97316;
-    }
-    .filter-apply-btn {
-        padding: 10px 20px;
-        background: #f97316;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: background 0.2s;
-    }
-    .filter-apply-btn:hover {
-        background: #ea580c;
-    }
-    .filter-clear-btn {
-        padding: 10px 20px;
-        background: white;
-        color: #64748b;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s;
-    }
-    .filter-clear-btn:hover {
-        background: #f1f5f9;
-        color: #475569;
-    }
-    .table-container {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    thead {
-        background: #f8fafc;
-    }
-    th {
-        padding: 16px;
-        text-align: left;
-        font-weight: 600;
-        color: #475569;
-        font-size: 14px;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    td {
-        padding: 16px;
-        border-bottom: 1px solid #e2e8f0;
-        color: #1a1a2e;
-        font-size: 14px;
-    }
-    tr:hover {
-        background: #f8fafc;
-    }
-    code {
-        background: #f1f5f9;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-family: 'Courier New', monospace;
-        font-size: 12px;
-    }
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    .status-active {
-        background: #dcfce7;
-        color: #166534;
-    }
-    .status-revoked {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #64748b;
-    }
-    .empty-state i {
-        font-size: 48px;
-        margin-bottom: 16px;
-        color: #cbd5e1;
-    }
-    .empty-state h3 {
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #475569;
-    }
-    .empty-state p {
-        font-size: 14px;
-        margin-bottom: 24px;
-    }
-    .pagination {
-        margin-top: 24px;
-        display: flex;
-        justify-content: center;
-    }
-    .pagination a {
-        padding: 8px 16px;
-        margin: 0 4px;
-        border-radius: 6px;
-        background: white;
-        color: #475569;
-        text-decoration: none;
-        border: 1px solid #e2e8f0;
-    }
-    .pagination a:hover {
-        background: #f8fafc;
-        border-color: #f97316;
-    }
-    .pagination .active {
-        background: #f97316;
-        color: white;
-        border-color: #f97316;
-    }
-</style>
-@endpush

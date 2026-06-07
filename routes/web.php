@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\HeartbeatController;
 use App\Http\Controllers\LicenseController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,11 @@ Route::post('/api/license/validate', [LicenseController::class, 'validate'])
 // This is used by external applications (e.g., Encoder) to activate devices
 Route::post('/api/device/activate', [ActivationController::class, 'activate'])
     ->name('api.device.activate');
+
+// Public API for device heartbeat (no authentication required)
+// This is used by external applications (e.g., Encoder) to send heartbeat signals
+Route::post('/api/device/heartbeat', [HeartbeatController::class, 'heartbeat'])
+    ->name('api.device.heartbeat');
 
 // Authentication routes
 Route::middleware('guest')->group(function () {
