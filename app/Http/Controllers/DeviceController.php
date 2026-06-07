@@ -15,39 +15,107 @@ class DeviceController extends Controller
     {
         $query = Device::with(['license.user']);
 
-        // Filter by license
-        if ($request->filled('license_id')) {
-            $query->where('license_id', $request->license_id);
-        }
-
-        // Filter by client (user)
-        if ($request->filled('user_id')) {
-            $query->whereHas('license', function ($q) use ($request) {
-                $q->where('user_id', $request->user_id);
-            });
-        }
-
         // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        $devices = $query->latest()->get();
+        // Filter by operating system
+        if ($request->filled('os')) {
+            $query->where('operating_system', $request->os);
+        }
+
+        // Search by device name or ID
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('device_id', 'like', "%{$search}%");
+            });
+        }
+
+        $devices = $query->latest()->paginate(10);
 
         // Get statistics
-        $statistics = [
-            'total' => Device::count(),
-            'active' => Device::where('status', 'active')->count(),
-            'suspended' => Device::where('status', 'suspended')->count(),
-            'revoked' => Device::where('status', 'revoked')->count(),
-            'online' => Device::online()->count(),
-        ];
+        $devicesCount = Device::count();
+        $onlineCount = Device::where('status', 'online')->count();
+        $offlineCount = Device::where('status', 'offline')->count();
+        $suspendedCount = Device::where('status', 'suspended')->count();
 
-        // Get filter options
-        $licenses = \App\Models\License::with('user')->get();
-        $clients = \App\Models\User::where('role', 'client')->get();
+        return view('devices.index', compact(
+            'devices',
+            'devicesCount',
+            'onlineCount',
+            'offlineCount',
+            'suspendedCount'
+        ));
+    }
 
-        return view('devices.index', compact('devices', 'statistics', 'licenses', 'clients'));
+    /**
+     * Show the form for creating a new device.
+     */
+    public function create(): View
+    {
+        $licenses = \App\Models\License::with('user')->where('status', 'active')->get();
+        return view('devices.create', compact('licenses'));
+    }
+
+    /**
+     * Store a newly created device in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'device_id' => ['required', 'string', 'max:255', 'unique:devices,device_id'],
+            'license_id' => ['required', 'exists:licenses,id'],
+            'operating_system' => ['required', 'in:windows,mac,linux'],
+            'status' => ['required', 'in:online,offline,suspended'],
+        ]);
+
+        Device::create($validated);
+
+        return redirect()->route('devices.index')
+            ->with('success', 'Device created successfully.');
+    }
+
+    /**
+     * Show the form for editing the specified device.
+     */
+    public function edit(Device $device): View
+    {
+        $licenses = \App\Models\License::with('user')->where('status', 'active')->get();
+        return view('devices.edit', compact('device', 'licenses'));
+    }
+
+    /**
+     * Update the specified device in storage.
+     */
+    public function update(Request $request, Device $device)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'device_id' => ['required', 'string', 'max:255', 'unique:devices,device_id,' . $device->id],
+            'license_id' => ['required', 'exists:licenses,id'],
+            'operating_system' => ['required', 'in:windows,mac,linux'],
+            'status' => ['required', 'in:online,offline,suspended'],
+        ]);
+
+        $device->update($validated);
+
+        return redirect()->route('devices.index')
+            ->with('success', 'Device updated successfully.');
+    }
+
+    /**
+     * Remove the specified device from storage.
+     */
+    public function destroy(Device $device)
+    {
+        $device->delete();
+
+        return redirect()->route('devices.index')
+            ->with('success', 'Device deleted successfully.');
     }
 
     /**

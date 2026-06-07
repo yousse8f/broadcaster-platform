@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\License;
+use App\Models\LicenseValidationLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class LicenseController extends Controller
 {
@@ -14,7 +16,7 @@ class LicenseController extends Controller
      */
     public function index(): View
     {
-        $licenses = License::with('user')->latest()->get();
+        $licenses = License::with('user')->latest()->paginate(10);
         return view('licenses.index', compact('licenses'));
     }
 
@@ -129,5 +131,137 @@ class LicenseController extends Controller
 
         return redirect()->route('licenses.index')
             ->with('success', 'License suspended successfully.');
+    }
+
+    /**
+     * Activate the specified license.
+     */
+    public function activate(License $license)
+    {
+        $license->update(['status' => 'active']);
+
+        return redirect()->route('licenses.index')
+            ->with('success', 'License activated successfully.');
+    }
+
+    /**
+     * Suspend the specified license.
+     */
+    public function suspend(License $license)
+    {
+        $license->update(['status' => 'suspended']);
+
+        return redirect()->route('licenses.index')
+            ->with('success', 'License suspended successfully.');
+    }
+
+    /**
+     * Validate a license key (public API for external applications).
+     * This endpoint does NOT register devices or activate licenses.
+     * It only checks if a license is valid for use.
+     */
+    public function validate(Request $request)
+    {
+        $validated = $request->validate([
+            'license_key' => ['required', 'string', 'max:100'],
+        ]);
+
+        $licenseKey = $validated['license_key'];
+        $ipAddress = $request->ip();
+        $checkedAt = Carbon::now();
+
+        // Phase 1: Search for the license
+        $license = License::where('license_key', $licenseKey)->first();
+
+        if (!$license) {
+            // Log the failure
+            LicenseValidationLog::create([
+                'license_key' => $licenseKey,
+                'ip_address' => $ipAddress,
+                'result' => 'failure',
+                'message' => 'License not found',
+                'license_id' => null,
+            ]);
+
+            return response()->json([
+                'valid' => false,
+                'message' => 'License not found',
+                'checked_at' => $checkedAt->toISOString(),
+            ], 404);
+        }
+
+        // Phase 2: Check license status
+        if (in_array($license->status, ['suspended', 'revoked', 'inactive'])) {
+            // Log the failure
+            LicenseValidationLog::create([
+                'license_key' => $licenseKey,
+                'ip_address' => $ipAddress,
+                'result' => 'failure',
+                'message' => 'License ' . $license->status,
+                'license_id' => $license->id,
+            ]);
+
+            return response()->json([
+                'valid' => false,
+                'message' => 'License ' . $license->status,
+                'checked_at' => $checkedAt->toISOString(),
+            ], 403);
+        }
+
+        // Phase 3: Check expiration date
+        if ($license->expires_at && $license->expires_at->isPast()) {
+            // Log the failure
+            LicenseValidationLog::create([
+                'license_key' => $licenseKey,
+                'ip_address' => $ipAddress,
+                'result' => 'failure',
+                'message' => 'License expired',
+                'license_id' => $license->id,
+            ]);
+
+            return response()->json([
+                'valid' => false,
+                'message' => 'License expired',
+                'checked_at' => $checkedAt->toISOString(),
+            ], 403);
+        }
+
+        // Phase 4: Check if the associated user exists and is active
+        $user = $license->user;
+        if (!$user) {
+            // Log the failure
+            LicenseValidationLog::create([
+                'license_key' => $licenseKey,
+                'ip_address' => $ipAddress,
+                'result' => 'failure',
+                'message' => 'Associated user not found',
+                'license_id' => $license->id,
+            ]);
+
+            return response()->json([
+                'valid' => false,
+                'message' => 'Associated user not found',
+                'checked_at' => $checkedAt->toISOString(),
+            ], 403);
+        }
+
+        // Phase 5: Return success result
+        // Log the success
+        LicenseValidationLog::create([
+            'license_key' => $licenseKey,
+            'ip_address' => $ipAddress,
+            'result' => 'success',
+            'message' => 'License validated successfully',
+            'license_id' => $license->id,
+        ]);
+
+        return response()->json([
+            'valid' => true,
+            'license_key' => $license->license_key,
+            'status' => $license->status,
+            'expires_at' => $license->expires_at ? $license->expires_at->toISOString() : null,
+            'allowed_devices' => $license->allowed_devices,
+            'checked_at' => $checkedAt->toISOString(),
+        ], 200);
     }
 }

@@ -19,6 +19,7 @@ class License extends Model
         'license_key',
         'status',
         'expires_at',
+        'expiry_date',
         'allowed_devices',
     ];
 
@@ -31,6 +32,7 @@ class License extends Model
     {
         return [
             'expires_at' => 'datetime',
+            'expiry_date' => 'datetime',
         ];
     }
 
