@@ -5,7 +5,7 @@
 @section('content')
 <div class="login-container">
     <div class="logo">
-        <img src="{{ asset('images/logo/logo maester.webp') }}" alt="Logo" class="logo-image">
+        <img src="{{ asset('images/logo/logo-maester.webp') }}" alt="Logo" class="logo-image">
         <h1 class="logo-text">broadcast Platform</h1>
     </div>
     

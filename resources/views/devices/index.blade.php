@@ -58,9 +58,9 @@
             <label class="filter-label">Status</label>
             <select name="status" class="filter-select">
                 <option value="">All Status</option>
-                <option value="online" {{ request('status') === 'online' ? 'selected' : '' }}>Online</option>
-                <option value="offline" {{ request('status') === 'offline' ? 'selected' : '' }}>Offline</option>
+                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
                 <option value="suspended" {{ request('status') === 'suspended' ? 'selected' : '' }}>Suspended</option>
+                <option value="revoked" {{ request('status') === 'revoked' ? 'selected' : '' }}>Revoked</option>
             </select>
         </div>
         
@@ -107,9 +107,9 @@
                 <tr>
                     <td>
                         <div class="device-name">
-                            <div class="device-avatar">{{ substr($device->name, 0, 1) }}</div>
+                            <div class="device-avatar">{{ substr($device->device_name, 0, 1) }}</div>
                             <div>
-                                <div class="name-text">{{ $device->name }}</div>
+                                <div class="name-text">{{ $device->device_name }}</div>
                                 <div class="device-meta">{{ $device->client_name ?? 'N/A' }}</div>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                             <a href="{{ route('devices.show', $device->id) }}" class="action-btn view-btn">
                                 <i class="fas fa-eye "></i> View
                             </a>
-                            @if($device->status === 'online')
+                            @if($device->status === 'active')
                                 <form method="POST" action="{{ route('devices.suspend', $device->id) }}" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="action-btn suspend-btn" onclick="return confirm('Are you sure you want to suspend this device?')">

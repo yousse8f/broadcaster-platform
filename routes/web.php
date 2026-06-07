@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
@@ -15,6 +16,11 @@ Route::get('/', function () {
 // This is used by external applications (e.g., Encoder) to validate license keys
 Route::post('/api/license/validate', [LicenseController::class, 'validate'])
     ->name('api.license.validate');
+
+// Public API for device activation (no authentication required)
+// This is used by external applications (e.g., Encoder) to activate devices
+Route::post('/api/device/activate', [ActivationController::class, 'activate'])
+    ->name('api.device.activate');
 
 // Authentication routes
 Route::middleware('guest')->group(function () {
@@ -33,6 +39,9 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+    
+    Route::get('/activation-logs', [DashboardController::class, 'activationLogs'])
+        ->name('activation-logs');
     
     // License Management (Admin only)
     Route::middleware('admin')->prefix('licenses')->name('licenses.')->group(function () {

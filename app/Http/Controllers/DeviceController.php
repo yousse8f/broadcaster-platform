@@ -29,7 +29,7 @@ class DeviceController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('device_name', 'like', "%{$search}%")
                   ->orWhere('device_id', 'like', "%{$search}%");
             });
         }
@@ -38,9 +38,9 @@ class DeviceController extends Controller
 
         // Get statistics
         $devicesCount = Device::count();
-        $onlineCount = Device::where('status', 'online')->count();
-        $offlineCount = Device::where('status', 'offline')->count();
-        $suspendedCount = Device::where('status', 'suspended')->count();
+        $onlineCount = Device::online()->count();
+        $offlineCount = Device::offline()->count();
+        $suspendedCount = Device::suspended()->count();
 
         return view('devices.index', compact(
             'devices',
@@ -66,11 +66,11 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'device_name' => ['required', 'string', 'max:255'],
             'device_id' => ['required', 'string', 'max:255', 'unique:devices,device_id'],
             'license_id' => ['required', 'exists:licenses,id'],
             'operating_system' => ['required', 'in:windows,mac,linux'],
-            'status' => ['required', 'in:online,offline,suspended'],
+            'status' => ['required', 'in:active,suspended,revoked'],
         ]);
 
         Device::create($validated);
@@ -94,11 +94,11 @@ class DeviceController extends Controller
     public function update(Request $request, Device $device)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'device_name' => ['required', 'string', 'max:255'],
             'device_id' => ['required', 'string', 'max:255', 'unique:devices,device_id,' . $device->id],
             'license_id' => ['required', 'exists:licenses,id'],
             'operating_system' => ['required', 'in:windows,mac,linux'],
-            'status' => ['required', 'in:online,offline,suspended'],
+            'status' => ['required', 'in:active,suspended,revoked'],
         ]);
 
         $device->update($validated);

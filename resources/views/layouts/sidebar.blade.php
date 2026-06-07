@@ -6,7 +6,7 @@
 
 <div class="sidebar">
     <div class="sidebar-logo">
-        <img src="{{ asset('images/logo/logo maester.webp') }}" alt="Logo" class="sidebar-logo-image">
+        <img src="{{ asset('images/logo/logo-maester.webp') }}" alt="Logo" class="sidebar-logo-image">
         <span class="sidebar-logo-text">broadcast</span>
     </div>
 
@@ -24,6 +24,10 @@
             <a href="{{ route('devices.index') }}" class="menu-item {{ request()->routeIs('devices.*') ? 'active' : '' }}">
                 <i class="fas fa-wifi"></i>
                 <span class="menu-item-text">Manage Devices</span>
+            </a>
+            <a href="{{ route('activation-logs') }}" class="menu-item {{ request()->routeIs('activation-logs') ? 'active' : '' }}">
+                <i class="fas fa-list"></i>
+                <span class="menu-item-text">Activation Logs</span>
             </a>
         @endif
 

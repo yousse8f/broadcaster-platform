@@ -67,7 +67,7 @@ class SettingsController extends Controller
             return [
                 'site_name' => 'broadcast',
                 'site_description' => 'License and Device Management System',
-                'logo' => 'images/logo/logo maester.webp',
+                'logo' => 'images/logo/logo-maester.webp',
                 'favicon' => 'favicon.ico',
             ];
         }
@@ -98,7 +98,7 @@ class SettingsController extends Controller
             unlink(public_path($settings['logo']));
         }
 
-        $settings['logo'] = 'images/logo/logo maester.webp';
+        $settings['logo'] = 'images/logo/logo-maester.webp';
         $this->saveSettings($settings);
 
         return redirect()->back()->with('success', 'Logo deleted successfully!');

@@ -29,8 +29,8 @@
         @endif
 
         <div class="form-group">
-            <label for="name">Device Name</label>
-            <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+            <label for="device_name">Device Name</label>
+            <input type="text" id="device_name" name="device_name" value="{{ old('device_name') }}" required>
             <p class="help-text">A descriptive name for this device</p>
         </div>
 
@@ -65,9 +65,9 @@
         <div class="form-group">
             <label for="status">Status</label>
             <select id="status" name="status" required>
-                <option value="online" {{ old('status') === 'online' ? 'selected' : '' }}>Online</option>
-                <option value="offline" {{ old('status') === 'offline' ? 'selected' : '' }}>Offline</option>
+                <option value="active" {{ old('status') === 'active' ? 'selected' : '' }}>Active</option>
                 <option value="suspended" {{ old('status') === 'suspended' ? 'selected' : '' }}>Suspended</option>
+                <option value="revoked" {{ old('status') === 'revoked' ? 'selected' : '' }}>Revoked</option>
             </select>
         </div>
 
