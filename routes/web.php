@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ActivationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
@@ -43,11 +44,22 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 // Protected routes
 Route::middleware('auth')->group(function () {
+    Route::get('/account', [AccountController::class, 'index'])
+        ->name('account.index');
+    Route::post('/account/update-profile', [AccountController::class, 'updateProfile'])
+        ->name('account.update-profile');
+    Route::post('/account/update-password', [AccountController::class, 'updatePassword'])
+        ->name('account.update-password');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
     
     Route::get('/activation-logs', [DashboardController::class, 'activationLogs'])
         ->name('activation-logs');
+    
+    // My Licenses (User specific)
+    Route::get('/my-licenses', [LicenseController::class, 'myLicenses'])
+        ->name('licenses.my');
     
     // License Management (Admin only)
     Route::middleware('admin')->prefix('licenses')->name('licenses.')->group(function () {
@@ -74,13 +86,5 @@ Route::middleware('auth')->group(function () {
         Route::post('/{device}/activate', [DeviceController::class, 'activate'])->name('activate');
         Route::post('/{device}/suspend', [DeviceController::class, 'suspend'])->name('suspend');
         Route::post('/{device}/revoke', [DeviceController::class, 'revoke'])->name('revoke');
-    });
-
-    // Settings Management (Admin only)
-    Route::middleware('admin')->prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', [SettingsController::class, 'index'])->name('index');
-        Route::post('/', [SettingsController::class, 'update'])->name('update');
-        Route::post('/delete-logo', [SettingsController::class, 'deleteLogo'])->name('deleteLogo');
-        Route::post('/delete-favicon', [SettingsController::class, 'deleteFavicon'])->name('deleteFavicon');
     });
 });

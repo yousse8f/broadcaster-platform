@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="text-3xl font-bold text-gray-900 mb-1">{{ $licensesCount ?? 0 }}</div>
-        <div class="text-sm text-gray-500">Total Licenses</div>
+        <div class="text-sm text-gray-500">{{ auth()->user()->role === 'admin' ? 'Total Licenses' : 'My Licenses' }}</div>
     </div>
 
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="text-3xl font-bold text-gray-900 mb-1">{{ $usersCount ?? 0 }}</div>
-        <div class="text-sm text-gray-500">Total Users</div>
+        <div class="text-sm text-gray-500">{{ auth()->user()->role === 'admin' ? 'Total Users' : 'My Account' }}</div>
     </div>
 
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="text-3xl font-bold text-gray-900 mb-1">{{ $devicesCount ?? 0 }}</div>
-        <div class="text-sm text-gray-500">Active Devices</div>
+        <div class="text-sm text-gray-500">{{ auth()->user()->role === 'admin' ? 'Active Devices' : 'My Devices' }}</div>
     </div>
 </div>
 
@@ -64,11 +64,17 @@
                 <div class="font-medium text-gray-900 mb-1">Manage Devices</div>
                 <div class="text-sm text-gray-500">Monitor connected devices</div>
             </a>
+        @else
+            <a href="{{ route('licenses.my') }}" class="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <i class="fas fa-key text-blue-600 text-xl mb-2"></i>
+                <div class="font-medium text-gray-900 mb-1">My Licenses</div>
+                <div class="text-sm text-gray-500">View all your licenses</div>
+            </a>
         @endif
-        <a href="{{ route('settings.index') }}" class="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <a href="{{ route('account.index') }}" class="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
             <i class="fas fa-cog text-blue-600 text-xl mb-2"></i>
-            <div class="font-medium text-gray-900 mb-1">Settings</div>
-            <div class="text-sm text-gray-500">Configure platform settings</div>
+            <div class="font-medium text-gray-900 mb-1">{{ auth()->user()->role === 'admin' ? 'Settings' : 'My Account' }}</div>
+            <div class="text-sm text-gray-500">{{ auth()->user()->role === 'admin' ? 'Configure platform settings' : 'Manage your account settings' }}</div>
         </a>
     </div>
 </div>

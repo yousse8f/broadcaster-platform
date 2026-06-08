@@ -28,28 +28,37 @@
         @endif
 
         @if (auth()->user()->role === 'client')
-            <a href="#" class="menu-item">
+            <a href="{{ route('licenses.my') }}" class="menu-item {{ request()->routeIs('licenses.my') ? 'active' : '' }}">
                 <i class="fas fa-laptop"></i>
                 <span class="menu-item-text">My Licenses</span>
             </a>
         @endif
 
-        @if (auth()->user()->role === 'admin')
-            <a href="{{ route('settings.index') }}" class="menu-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                <i class="fas fa-cog"></i>
-                <span class="menu-item-text">Settings</span>
-            </a>
-        @else
-            <a href="#" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span class="menu-item-text">Settings</span>
+        @if (auth()->user()->role === 'admin' && auth()->user()->name === 'admin')
+            <a href="{{ route('account.index') }}" class="menu-item {{ request()->routeIs('account.*') ? 'active' : '' }}">
+                <i class="fas fa-user-shield"></i>
+                <span class="menu-item-text">Admin User</span>
             </a>
         @endif
 
-        <a href="#" class="menu-item">
-            <i class="fas fa-question-circle"></i>
-            <span class="menu-item-text">Help</span>
-        </a>
+        @if (auth()->user()->role === 'admin')
+            <a href="{{ route('account.index') }}" class="menu-item {{ request()->routeIs('account.*') ? 'active' : '' }}">
+                <i class="fas fa-user"></i>
+                <span class="menu-item-text">Settings</span>
+            </a>
+        @else
+            <a href="{{ route('account.index') }}" class="menu-item {{ request()->routeIs('account.*') ? 'active' : '' }}">
+                <i class="fas fa-user"></i>
+                <span class="menu-item-text">My Account</span>
+            </a>
+        @endif
+
+        @if (auth()->user()->role === 'client')
+            <a href="#" class="menu-item">
+                <i class="fas fa-question-circle"></i>
+                <span class="menu-item-text">Help</span>
+            </a>
+        @endif
     </div>
 
     <div class="sidebar-footer">

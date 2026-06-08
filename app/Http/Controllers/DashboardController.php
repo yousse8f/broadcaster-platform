@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -12,10 +13,26 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            // Show system-wide statistics for admin
+            $licensesCount = \App\Models\License::count();
+            $usersCount = \App\Models\User::count();
+            $devicesCount = \App\Models\Device::count();
+        } else {
+            // Show user-specific statistics for client
+            $licensesCount = $user->licenses()->count();
+            $usersCount = 1; // Only current user
+            // Get devices through user's licenses
+            $devicesCount = \App\Models\Device::whereIn('license_id', $user->licenses()->pluck('id'))->count();
+        }
+
         return view('dashboard', [
-            'licensesCount' => \App\Models\License::count(),
-            'usersCount' => \App\Models\User::count(),
-            'devicesCount' => \App\Models\Device::count(),
+            'licensesCount' => $licensesCount,
+            'usersCount' => $usersCount,
+            'devicesCount' => $devicesCount,
         ]);
     }
 

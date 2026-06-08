@@ -3,7 +3,7 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="w-full max-w-md bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+<div class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-lg shadow-lg border border-gray-200 overflow-hidden">
     <div class="bg-gray-50 p-8 border-b border-gray-200">
         <div class="text-center">
             <img src="{{ asset('images/logo/logo-maester.webp') }}" alt="broadcast.nissireseaux" class="w-24 h-24 mx-auto mb-4 object-contain">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\License;
 use App\Models\LicenseValidationLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Carbon\Carbon;
@@ -18,6 +19,17 @@ class LicenseController extends Controller
     {
         $licenses = License::with('user')->latest()->paginate(10);
         return view('licenses.index', compact('licenses'));
+    }
+
+    /**
+     * Display the authenticated user's licenses.
+     */
+    public function myLicenses(): View
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $licenses = $user->licenses()->with('devices')->latest()->paginate(10);
+        return view('licenses.my-licenses', compact('licenses'));
     }
 
     /**
