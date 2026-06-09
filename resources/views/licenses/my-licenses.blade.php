@@ -59,7 +59,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex gap-2">
-                            <a href="{{ route('licenses.show', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50" title="View details">
+                            <a href="{{ route('admin.licenses.show', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50" title="View details">
                                 <i class="fas fa-eye"></i>
                             </a>
                         </div>

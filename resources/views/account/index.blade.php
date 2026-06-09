@@ -81,7 +81,7 @@
                 Subscription & Licenses
             </h2>
             @if(auth()->user()->role === 'client')
-                <a href="{{ route('licenses.my') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                <a href="{{ route('client.licenses') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
                     <i class="fas fa-arrow-right mr-1"></i> View All
                 </a>
             @endif

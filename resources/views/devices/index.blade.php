@@ -5,7 +5,7 @@
 @section('content')
 <div class="flex justify-between items-center mb-8">
     <h1 class="text-3xl font-bold text-gray-900">Devices Management</h1>
-    <a href="{{ route('devices.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+    <a href="{{ route('admin.devices.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
         <i class="fas fa-plus"></i>
         Add Device
     </a>
@@ -42,7 +42,7 @@
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-    <form method="GET" action="{{ route('devices.index') }}" class="flex flex-wrap gap-4">
+    <form method="GET" action="{{ route('admin.devices.index') }}" class="flex flex-wrap gap-4">
         <div class="flex-1 min-w-[200px]">
             <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10">
                 <option value="">All Status</option>
@@ -64,7 +64,7 @@
         </div>
         <div class="flex gap-2">
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 h-10">Filter</button>
-            <a href="{{ route('devices.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 h-10">Clear</a>
+            <a href="{{ route('admin.devices.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 h-10">Clear</a>
         </div>
     </form>
 </div>
@@ -115,20 +115,20 @@
                     <td class="px-6 py-4 text-gray-600">{{ $device->last_seen ? $device->last_seen->diffForHumans() : 'Never' }}</td>
                     <td class="px-6 py-4">
                         <div class="flex gap-2">
-                            <a href="{{ route('devices.show', $device->id) }}" class="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded">View</a>
+                            <a href="{{ route('admin.devices.show', $device->id) }}" class="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded">View</a>
                             @if($device->status === 'active')
-                                <form method="POST" action="{{ route('devices.suspend', $device->id) }}" class="inline">
+                                <form method="POST" action="{{ route('admin.devices.suspend', $device->id) }}" class="inline">
                                     @csrf
                                     <button type="submit" class="px-3 py-1 text-sm text-yellow-700 hover:bg-yellow-100 rounded" onclick="return confirm('Are you sure you want to suspend this device?')">Suspend</button>
                                 </form>
                             @endif
                             @if($device->status === 'suspended')
-                                <form method="POST" action="{{ route('devices.activate', $device->id) }}" class="inline">
+                                <form method="POST" action="{{ route('admin.devices.activate', $device->id) }}" class="inline">
                                     @csrf
                                     <button type="submit" class="px-3 py-1 text-sm text-green-700 hover:bg-green-100 rounded" onclick="return confirm('Are you sure you want to activate this device?')">Activate</button>
                                 </form>
                             @endif
-                            <form method="POST" action="{{ route('devices.destroy', $device->id) }}" class="inline">
+                            <form method="POST" action="{{ route('admin.devices.destroy', $device->id) }}" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-3 py-1 text-sm text-red-700 hover:bg-red-100 rounded" onclick="return confirm('Are you sure you want to delete this device?')">Delete</button>
@@ -143,7 +143,7 @@
                             <i class="fas fa-wifi text-4xl mb-4"></i>
                             <h3 class="text-lg font-medium text-gray-900 mb-2">No devices found</h3>
                             <p class="text-gray-500 mb-4">Add your first device to get started</p>
-                            <a href="{{ route('devices.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <a href="{{ route('admin.devices.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                                 <i class="fas fa-plus"></i> Add Device
                             </a>
                         </div>

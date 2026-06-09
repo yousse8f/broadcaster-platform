@@ -75,7 +75,7 @@ class DeviceController extends Controller
 
         Device::create($validated);
 
-        return redirect()->route('devices.index')
+        return redirect()->route('admin.devices.index')
             ->with('success', 'Device created successfully.');
     }
 
@@ -103,7 +103,7 @@ class DeviceController extends Controller
 
         $device->update($validated);
 
-        return redirect()->route('devices.index')
+        return redirect()->route('admin.devices.index')
             ->with('success', 'Device updated successfully.');
     }
 
@@ -114,7 +114,7 @@ class DeviceController extends Controller
     {
         $device->delete();
 
-        return redirect()->route('devices.index')
+        return redirect()->route('admin.devices.index')
             ->with('success', 'Device deleted successfully.');
     }
 

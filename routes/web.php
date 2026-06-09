@@ -44,25 +44,27 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 // Protected routes
 Route::middleware('auth')->group(function () {
+    // Account management (available to both admin and client)
     Route::get('/account', [AccountController::class, 'index'])
         ->name('account.index');
     Route::post('/account/update-profile', [AccountController::class, 'updateProfile'])
         ->name('account.update-profile');
     Route::post('/account/update-password', [AccountController::class, 'updatePassword'])
         ->name('account.update-password');
+});
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
+// Admin Routes - Protected by admin middleware
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Admin Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])
         ->name('dashboard');
-    
+
+    // Activation Logs
     Route::get('/activation-logs', [DashboardController::class, 'activationLogs'])
         ->name('activation-logs');
-    
-    // My Licenses (User specific)
-    Route::get('/my-licenses', [LicenseController::class, 'myLicenses'])
-        ->name('licenses.my');
-    
-    // License Management (Admin only)
-    Route::middleware('admin')->prefix('licenses')->name('licenses.')->group(function () {
+
+    // License Management
+    Route::prefix('licenses')->name('licenses.')->group(function () {
         Route::get('/', [LicenseController::class, 'index'])->name('index');
         Route::get('/create', [LicenseController::class, 'create'])->name('create');
         Route::post('/', [LicenseController::class, 'store'])->name('store');
@@ -74,8 +76,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/{license}/suspend', [LicenseController::class, 'suspend'])->name('suspend');
     });
 
-    // Device Management (Admin only)
-    Route::middleware('admin')->prefix('devices')->name('devices.')->group(function () {
+    // Device Management
+    Route::prefix('devices')->name('devices.')->group(function () {
         Route::get('/', [DeviceController::class, 'index'])->name('index');
         Route::get('/create', [DeviceController::class, 'create'])->name('create');
         Route::post('/', [DeviceController::class, 'store'])->name('store');
@@ -87,4 +89,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/{device}/suspend', [DeviceController::class, 'suspend'])->name('suspend');
         Route::post('/{device}/revoke', [DeviceController::class, 'revoke'])->name('revoke');
     });
+});
+
+// Client Routes - Protected by client middleware
+Route::middleware(['auth', 'client'])->prefix('client')->name('client.')->group(function () {
+    // Client Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'clientDashboard'])
+        ->name('dashboard');
+
+    // My Licenses
+    Route::get('/licenses', [LicenseController::class, 'myLicenses'])
+        ->name('licenses');
 });

@@ -26,7 +26,7 @@
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-    <form method="GET" action="{{ route('activation-logs') }}" class="flex flex-wrap gap-4">
+    <form method="GET" action="{{ route('admin.activation-logs') }}" class="flex flex-wrap gap-4">
         <div class="flex-1 min-w-[200px]">
             <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10">
                 <option value="">All Status</option>
@@ -42,7 +42,7 @@
         </div>
         <div class="flex gap-2">
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 h-10">Filter</button>
-            <a href="{{ route('activation-logs') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 h-10">Clear</a>
+            <a href="{{ route('admin.activation-logs') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 h-10">Clear</a>
         </div>
     </form>
 </div>

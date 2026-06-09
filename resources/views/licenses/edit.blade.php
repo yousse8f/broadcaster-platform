@@ -5,11 +5,11 @@
 @section('content')
 <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-900 mb-2">Edit License</h1>
-    <a href="{{ route('licenses.index') }}" class="text-blue-600 hover:underline">← Back to Licenses</a>
+    <a href="{{ route('admin.licenses.index') }}" class="text-blue-600 hover:underline">← Back to Licenses</a>
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 max-w-2xl">
-    <form method="POST" action="{{ route('licenses.update', $license) }}">
+    <form method="POST" action="{{ route('admin.licenses.update', $license) }}">
         @csrf
         @method('PUT')
 

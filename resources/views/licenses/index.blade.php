@@ -5,7 +5,7 @@
 @section('content')
 <div class="flex justify-between items-center mb-8">
     <h1 class="text-3xl font-bold text-gray-900">Licenses Management</h1>
-    <a href="{{ route('licenses.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+    <a href="{{ route('admin.licenses.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
         <i class="fas fa-plus"></i>
         Create License
     </a>
@@ -68,13 +68,13 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex gap-2">
-                            <a href="{{ route('licenses.show', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50">
+                            <a href="{{ route('admin.licenses.show', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('licenses.edit', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50">
+                            <a href="{{ route('admin.licenses.edit', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form method="POST" action="{{ route('licenses.destroy', $license->id) }}" class="inline">
+                            <form method="POST" action="{{ route('admin.licenses.destroy', $license->id) }}" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="p-2 text-gray-400 hover:text-red-600 rounded hover:bg-red-50" onclick="return confirm('Are you sure you want to delete this license?')">
@@ -91,7 +91,7 @@
                             <i class="fas fa-key text-4xl mb-4"></i>
                             <h3 class="text-lg font-medium text-gray-900 mb-2">No licenses found</h3>
                             <p class="text-gray-500 mb-4">Create your first license to get started</p>
-                            <a href="{{ route('licenses.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <a href="{{ route('admin.licenses.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                                 <i class="fas fa-plus"></i> Create License
                             </a>
                         </div>

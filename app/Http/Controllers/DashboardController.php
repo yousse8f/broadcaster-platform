@@ -9,27 +9,37 @@ use Illuminate\View\View;
 class DashboardController extends Controller
 {
     /**
-     * Display the dashboard.
+     * Display the admin dashboard.
      */
-    public function index(): View
+    public function adminDashboard(): View
+    {
+        // Show system-wide statistics for admin
+        $licensesCount = \App\Models\License::count();
+        $usersCount = \App\Models\User::count();
+        $devicesCount = \App\Models\Device::count();
+
+        return view('admin-dashboard', [
+            'licensesCount' => $licensesCount,
+            'usersCount' => $usersCount,
+            'devicesCount' => $devicesCount,
+        ]);
+    }
+
+    /**
+     * Display the client dashboard.
+     */
+    public function clientDashboard(): View
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            // Show system-wide statistics for admin
-            $licensesCount = \App\Models\License::count();
-            $usersCount = \App\Models\User::count();
-            $devicesCount = \App\Models\Device::count();
-        } else {
-            // Show user-specific statistics for client
-            $licensesCount = $user->licenses()->count();
-            $usersCount = 1; // Only current user
-            // Get devices through user's licenses
-            $devicesCount = \App\Models\Device::whereIn('license_id', $user->licenses()->pluck('id'))->count();
-        }
+        // Show user-specific statistics for client
+        $licensesCount = $user->licenses()->count();
+        $usersCount = 1; // Only current user
+        // Get devices through user's licenses
+        $devicesCount = \App\Models\Device::whereIn('license_id', $user->licenses()->pluck('id'))->count();
 
-        return view('dashboard', [
+        return view('client-dashboard', [
             'licensesCount' => $licensesCount,
             'usersCount' => $usersCount,
             'devicesCount' => $devicesCount,

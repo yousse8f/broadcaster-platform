@@ -5,7 +5,7 @@
 @section('content')
 <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-900 mb-2">License Details</h1>
-    <a href="{{ route('licenses.index') }}" class="text-blue-600 hover:underline">← Back to Licenses</a>
+    <a href="{{ route('admin.licenses.index') }}" class="text-blue-600 hover:underline">← Back to Licenses</a>
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
@@ -48,7 +48,7 @@
     <div class="mb-6">
         <div class="text-sm text-gray-500 mb-1">Device Usage</div>
         <div class="text-xl font-semibold text-gray-900">
-            <a href="{{ route('devices.index', ['license_id' => $license->id]) }}" class="text-blue-600 hover:underline">
+            <a href="{{ route('admin.devices.index', ['license_id' => $license->id]) }}" class="text-blue-600 hover:underline">
                 {{ $license->active_devices_count }} / {{ $license->allowed_devices }} devices registered
             </a>
             @if($license->online_devices_count > 0)
@@ -60,8 +60,8 @@
     </div>
 
     <div class="flex gap-3">
-        <a href="{{ route('licenses.edit', $license) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Edit License</a>
-        <form method="POST" action="{{ route('licenses.destroy', $license) }}" class="inline">
+        <a href="{{ route('admin.licenses.edit', $license) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Edit License</a>
+        <form method="POST" action="{{ route('admin.licenses.destroy', $license) }}" class="inline">
             @csrf
             @method('DELETE')
             <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700" onclick="return confirm('Are you sure you want to suspend this license?')">Suspend License</button>
@@ -73,7 +73,7 @@
     <h2 class="text-xl font-semibold text-gray-900 mb-4">Registered Devices</h2>
     @if ($license->devices->count() > 0)
         @foreach ($license->devices as $device)
-            <a href="{{ route('devices.show', $device) }}" class="block p-4 bg-gray-50 rounded-lg mb-3 hover:bg-gray-100">
+            <a href="{{ route('admin.devices.show', $device) }}" class="block p-4 bg-gray-50 rounded-lg mb-3 hover:bg-gray-100">
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="font-semibold text-gray-900 mb-1">{{ $device->device_name }}</div>

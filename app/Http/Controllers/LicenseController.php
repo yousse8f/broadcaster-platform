@@ -74,7 +74,7 @@ class LicenseController extends Controller
 
         License::create($validated);
 
-        return redirect()->route('licenses.index')
+        return redirect()->route('admin.licenses.index')
             ->with('success', 'License created successfully.');
     }
 
@@ -129,7 +129,7 @@ class LicenseController extends Controller
 
         $license->update($validated);
 
-        return redirect()->route('licenses.index')
+        return redirect()->route('admin.licenses.index')
             ->with('success', 'License updated successfully.');
     }
 
@@ -141,7 +141,7 @@ class LicenseController extends Controller
         // Soft delete by suspending instead of actual deletion
         $license->update(['status' => 'suspended']);
 
-        return redirect()->route('licenses.index')
+        return redirect()->route('admin.licenses.index')
             ->with('success', 'License suspended successfully.');
     }
 
@@ -152,7 +152,7 @@ class LicenseController extends Controller
     {
         $license->update(['status' => 'active']);
 
-        return redirect()->route('licenses.index')
+        return redirect()->route('admin.licenses.index')
             ->with('success', 'License activated successfully.');
     }
 
@@ -163,7 +163,7 @@ class LicenseController extends Controller
     {
         $license->update(['status' => 'suspended']);
 
-        return redirect()->route('licenses.index')
+        return redirect()->route('admin.licenses.index')
             ->with('success', 'License suspended successfully.');
     }
 

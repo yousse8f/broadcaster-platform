@@ -5,13 +5,13 @@
 @section('content')
 <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-900 mb-2">Edit Device</h1>
-    <a href="{{ route('devices.index') }}" class="text-blue-600 hover:underline">
+    <a href="{{ route('admin.devices.index') }}" class="text-blue-600 hover:underline">
         <i class="fas fa-arrow-left"></i> Back to Devices
     </a>
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 max-w-2xl">
-    <form method="POST" action="{{ route('devices.update', $device->id) }}">
+    <form method="POST" action="{{ route('admin.devices.update', $device->id) }}">
         @csrf
         @method('PUT')
 

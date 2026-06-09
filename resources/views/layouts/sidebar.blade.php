@@ -7,28 +7,31 @@
     </div>
 
     <div class="sidebar-menu">
-        <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i class="fas fa-home"></i>
-            <span class="menu-item-text">Dashboard</span>
-        </a>
-
         @if (auth()->user()->role === 'admin')
-            <a href="{{ route('licenses.index') }}" class="menu-item {{ request()->routeIs('licenses.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-home"></i>
+                <span class="menu-item-text">Dashboard</span>
+            </a>
+            <a href="{{ route('admin.licenses.index') }}" class="menu-item {{ request()->routeIs('admin.licenses.*') ? 'active' : '' }}">
                 <i class="fas fa-key"></i>
                 <span class="menu-item-text">Manage Licenses</span>
             </a>
-            <a href="{{ route('devices.index') }}" class="menu-item {{ request()->routeIs('devices.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.devices.index') }}" class="menu-item {{ request()->routeIs('admin.devices.*') ? 'active' : '' }}">
                 <i class="fas fa-wifi"></i>
                 <span class="menu-item-text">Manage Devices</span>
             </a>
-            <a href="{{ route('activation-logs') }}" class="menu-item {{ request()->routeIs('activation-logs') ? 'active' : '' }}">
+            <a href="{{ route('admin.activation-logs') }}" class="menu-item {{ request()->routeIs('admin.activation-logs') ? 'active' : '' }}">
                 <i class="fas fa-list"></i>
                 <span class="menu-item-text">Activation Logs</span>
             </a>
         @endif
 
         @if (auth()->user()->role === 'client')
-            <a href="{{ route('licenses.my') }}" class="menu-item {{ request()->routeIs('licenses.my') ? 'active' : '' }}">
+            <a href="{{ route('client.dashboard') }}" class="menu-item {{ request()->routeIs('client.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-home"></i>
+                <span class="menu-item-text">Dashboard</span>
+            </a>
+            <a href="{{ route('client.licenses') }}" class="menu-item {{ request()->routeIs('client.licenses') ? 'active' : '' }}">
                 <i class="fas fa-laptop"></i>
                 <span class="menu-item-text">My Licenses</span>
             </a>
