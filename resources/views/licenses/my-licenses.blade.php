@@ -56,7 +56,7 @@
                             @if($license->expires_at->isPast())
                                 <span class="text-red-600 font-medium">Expired</span>
                             @else
-                                <span class="text-gray-900">{{ $license->expires_at->diffInDays(now()) }} Days</span>
+                                <span class="text-gray-900">{{ round($license->expires_at->diffInDays(now())) }} Days</span>
                             @endif
                         @else
                             <span class="text-gray-500">Never</span>

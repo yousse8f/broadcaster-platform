@@ -64,17 +64,17 @@
                     <div>
                         <div class="font-medium text-gray-900">{{ $license->license_key }}</div>
                         <div class="text-sm text-gray-600">
-                            Expires in {{ $license->expires_at->diffInDays(now()) }} days
+                            Expires in {{ round($license->expires_at->diffInDays(now())) }} days
                             ({{ $license->expires_at->format('M d, Y') }})
                         </div>
                     </div>
-                    @if($license->expires_at->diffInDays(now()) <= 7)
+                    @if(round($license->expires_at->diffInDays(now())) <= 7)
                         <span class="px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full">
-                            🚨 {{ $license->expires_at->diffInDays(now()) }} days left
+                            🚨 {{ round($license->expires_at->diffInDays(now())) }} days left
                         </span>
                     @else
                         <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium rounded-full">
-                            ⚠️ {{ $license->expires_at->diffInDays(now()) }} days left
+                            ⚠️ {{ round($license->expires_at->diffInDays(now())) }} days left
                         </span>
                     @endif
                 </div>

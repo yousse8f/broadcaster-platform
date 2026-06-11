@@ -50,19 +50,19 @@
                 @if($license->expires_at->isPast())
                     <span class="text-red-600 font-medium">Expired</span>
                 @else
-                    <span class="text-gray-900">{{ $license->expires_at->diffInDays(now()) }} Days</span>
+                    <span class="text-gray-900">{{ round($license->expires_at->diffInDays(now())) }} Days</span>
                 @endif
             @else
                 <span class="text-gray-500">Never</span>
             @endif
         </div>
-        @if($license->expires_at && $license->expires_at->diffInDays(now()) <= 30)
+        @if($license->expires_at && round($license->expires_at->diffInDays(now())) <= 30)
             <div>
                 <div class="text-sm text-gray-500 mb-1">Warning</div>
-                @if($license->expires_at->diffInDays(now()) <= 7)
-                    <span class="text-red-600">🚨 Expires in {{ $license->expires_at->diffInDays(now()) }} days</span>
+                @if(round($license->expires_at->diffInDays(now())) <= 7)
+                    <span class="text-red-600">🚨 Expires in {{ round($license->expires_at->diffInDays(now())) }} days</span>
                 @else
-                    <span class="text-yellow-600">⚠️ Expires in {{ $license->expires_at->diffInDays(now()) }} days</span>
+                    <span class="text-yellow-600">⚠️ Expires in {{ round($license->expires_at->diffInDays(now())) }} days</span>
                 @endif
             </div>
         @endif
