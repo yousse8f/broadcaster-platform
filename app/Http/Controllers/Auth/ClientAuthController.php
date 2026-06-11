@@ -8,18 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AuthenticatedSessionController extends Controller
+class ClientAuthController extends Controller
 {
     /**
-     * Display the login view.
+     * Display the client login view.
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view('auth.client-login');
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Handle an incoming client authentication request.
      */
     public function store(Request $request)
     {
@@ -35,13 +35,20 @@ class AuthenticatedSessionController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // Redirect based on user role
             $user = Auth::user();
-            if ($user->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
-            } else {
-                return redirect()->intended(route('client.dashboard'));
+
+            // Check if user is client
+            if ($user->role !== 'client') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'Access denied. Client access only.',
+                ])->onlyInput('email');
             }
+
+            return redirect()->intended(route('client.dashboard'));
         }
 
         // Log failed login attempt
@@ -51,6 +58,7 @@ class AuthenticatedSessionController extends Controller
             'user_agent' => $request->userAgent(),
             'details' => [
                 'email' => $request->email,
+                'login_type' => 'client',
             ],
             'severity' => 'medium',
         ]);
@@ -61,7 +69,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * Destroy an authenticated client session.
      */
     public function destroy(Request $request)
     {
@@ -70,6 +78,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/client/login');
     }
 }

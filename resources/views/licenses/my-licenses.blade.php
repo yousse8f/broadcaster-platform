@@ -20,8 +20,10 @@
             <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">License Key</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Devices</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiration Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Remaining</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Allowed Devices</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
         </thead>
@@ -39,35 +41,46 @@
                     <td class="px-6 py-4">
                         <span class="px-2 py-1 text-xs font-medium rounded-full
                             @if($license->status == 'active') bg-green-100 text-green-700
-                            @elseif($license->status == 'suspended') bg-red-100 text-red-700
-                            @elseif($license->status == 'expired') bg-yellow-100 text-yellow-700
+                            @elseif($license->status == 'suspended') bg-orange-100 text-orange-700
+                            @elseif($license->status == 'expired') bg-red-100 text-red-700
                             @else bg-gray-100 text-gray-700
                             @endif">
                             {{ ucfirst($license->status) }}
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="flex items-center gap-2">
-                            <span class="font-medium">{{ $license->devices->count() }}</span>
-                            <span class="text-gray-400">/</span>
-                            <span>{{ $license->allowed_devices }}</span>
-                            <span class="text-gray-500 text-sm">devices</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-gray-600">
-                        {{ $license->expires_at ? $license->expires_at->format('M d, Y') : 'Never' }}
+                        <div class="text-gray-600">{{ $license->expires_at ? $license->expires_at->format('M d, Y') : 'Never' }}</div>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="flex gap-2">
-                            <a href="{{ route('admin.licenses.show', $license->id) }}" class="p-2 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50" title="View details">
-                                <i class="fas fa-eye"></i>
-                            </a>
+                        @if($license->expires_at)
+                            @if($license->expires_at->isPast())
+                                <span class="text-red-600 font-medium">Expired</span>
+                            @else
+                                <span class="text-gray-900">{{ $license->expires_at->diffInDays(now()) }} Days</span>
+                            @endif
+                        @else
+                            <span class="text-gray-500">Never</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium">{{ $license->devices()->where('status', 'active')->count() }}</span>
+                            <span class="text-gray-400">/</span>
+                            <span>{{ $license->allowed_devices }}</span>
                         </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-gray-600">{{ $license->created_at->format('M d, Y') }}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="{{ route('client.licenses.show', $license->id) }}" class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">
+                            Details
+                        </a>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-12 text-center">
+                    <td colspan="7" class="px-6 py-12 text-center">
                         <div class="text-gray-400">
                             <i class="fas fa-key text-4xl mb-4"></i>
                             <h3 class="text-lg font-medium text-gray-900 mb-2">No licenses found</h3>

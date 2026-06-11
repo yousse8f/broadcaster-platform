@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewDeviceActivated;
 use App\Models\ActivationLog;
 use App\Models\Device;
 use App\Models\License;
+use App\Models\SecurityAuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ActivationController extends Controller
 {
@@ -53,6 +56,20 @@ class ActivationController extends Controller
                 null
             );
 
+            // Log security event
+            SecurityAuditLog::logEvent([
+                'event_type' => 'failed_activation',
+                'ip_address' => $ipAddress,
+                'user_agent' => $request->userAgent(),
+                'license_key' => $licenseKey,
+                'device_id' => $deviceId,
+                'details' => [
+                    'device_name' => $deviceName,
+                    'reason' => 'License not found',
+                ],
+                'severity' => 'high',
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'License not found',
@@ -78,6 +95,20 @@ class ActivationController extends Controller
                 $license->id
             );
 
+            // Log security event
+            SecurityAuditLog::logEvent([
+                'event_type' => 'failed_activation',
+                'ip_address' => $ipAddress,
+                'user_agent' => $request->userAgent(),
+                'license_key' => $licenseKey,
+                'device_id' => $deviceId,
+                'details' => [
+                    'device_name' => $deviceName,
+                    'reason' => $message,
+                ],
+                'severity' => 'medium',
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => $message,
@@ -95,6 +126,20 @@ class ActivationController extends Controller
                 'License expired',
                 $license->id
             );
+
+            // Log security event
+            SecurityAuditLog::logEvent([
+                'event_type' => 'failed_activation',
+                'ip_address' => $ipAddress,
+                'user_agent' => $request->userAgent(),
+                'license_key' => $licenseKey,
+                'device_id' => $deviceId,
+                'details' => [
+                    'device_name' => $deviceName,
+                    'reason' => 'License expired',
+                ],
+                'severity' => 'medium',
+            ]);
 
             return response()->json([
                 'success' => false,
@@ -171,6 +216,22 @@ class ActivationController extends Controller
                 $license->id
             );
 
+            // Log security event
+            SecurityAuditLog::logEvent([
+                'event_type' => 'failed_activation',
+                'ip_address' => $ipAddress,
+                'user_agent' => $request->userAgent(),
+                'license_key' => $licenseKey,
+                'device_id' => $deviceId,
+                'details' => [
+                    'device_name' => $deviceName,
+                    'reason' => 'Device limit reached',
+                    'allowed_devices' => $license->allowed_devices,
+                    'active_devices' => $activeDevicesCount,
+                ],
+                'severity' => 'low',
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Device limit reached',
@@ -190,6 +251,13 @@ class ActivationController extends Controller
             'first_activated_at' => now(),
             'last_seen' => now(),
         ]);
+
+        // Send email notification for new device activation
+        try {
+            Mail::to($license->user->email)->send(new NewDeviceActivated($newDevice));
+        } catch (\Exception $e) {
+            Log::error("Failed to send new device activation email: " . $e->getMessage());
+        }
 
         $this->logActivation(
             $licenseKey,

@@ -61,6 +61,31 @@
 
     <div class="flex gap-3">
         <a href="{{ route('admin.licenses.edit', $license) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Edit License</a>
+        <div class="relative inline-block">
+            <button onclick="document.getElementById('renewDropdown').classList.toggle('hidden')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Renew License</button>
+            <div id="renewDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                <form method="POST" action="{{ route('admin.licenses.renew', $license) }}" class="p-2">
+                    @csrf
+                    <input type="hidden" name="days" value="30">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">30 Days</button>
+                </form>
+                <form method="POST" action="{{ route('admin.licenses.renew', $license) }}" class="p-2">
+                    @csrf
+                    <input type="hidden" name="days" value="90">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">90 Days</button>
+                </form>
+                <form method="POST" action="{{ route('admin.licenses.renew', $license) }}" class="p-2">
+                    @csrf
+                    <input type="hidden" name="days" value="180">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">180 Days</button>
+                </form>
+                <form method="POST" action="{{ route('admin.licenses.renew', $license) }}" class="p-2">
+                    @csrf
+                    <input type="hidden" name="days" value="365">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">365 Days</button>
+                </form>
+            </div>
+        </div>
         <form method="POST" action="{{ route('admin.licenses.destroy', $license) }}" class="inline">
             @csrf
             @method('DELETE')
